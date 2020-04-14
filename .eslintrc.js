@@ -5,41 +5,35 @@ module.exports = {
   },
   extends: [
     "eslint:recommended",
-    "plugin:node/recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint",
-    "plugin:@typescript-eslint/recommended",
   ],
   settings: {
-    node: {
-      tryExtensions: [".js", ".ts", ".json", ".node"],
+    react: {
+      version: "detect",
     },
   },
-  plugins: ["@typescript-eslint", "prettier", "jest"],
+  plugins: ["@typescript-eslint", "jest"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: "module",
-    project: `${__dirname}/tsconfig.json`,
-    tsconfigRootDir: __dirname,
   },
   rules: {
     "no-console": 1,
     "no-unused-vars": ["error", { ignoreModules: true }],
     "prettier/prettier": ["error", { trailingComma: "es5" }],
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0,
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
         vars: "all",
         args: "after-used",
         ignoreRestSiblings: false,
-      },
-    ],
-    "node/no-unsupported-features/es-syntax": [
-      "error",
-      {
-        version: ">=12.0.0",
-        ignores: ["modules"],
       },
     ],
     "@typescript-eslint/no-var-requires": 1,
