@@ -1,12 +1,11 @@
 import { NextPage } from "next";
-import Header from "./../components/Header";
+import Layout from "../components/MyLayout";
 
 const Index: NextPage<{ userAgent: string }> = ({ userAgent }) => {
   return (
-    <div>
-      <Header />
+    <Layout>
       <p>Hello Next.js World! - userAgent: {userAgent}</p>
-    </div>
+    </Layout>
   );
 };
 
