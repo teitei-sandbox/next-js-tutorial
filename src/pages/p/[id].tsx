@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Layout from "../components/MyLayout";
+import Layout from "../../components/MyLayout";
 
-const Page: NextPage<{}> = () => {
+const Post: NextPage<{}> = () => {
   const router = useRouter();
 
   return (
@@ -13,4 +13,4 @@ const Page: NextPage<{}> = () => {
   );
 };
 
-export default Page;
+export default Post;
