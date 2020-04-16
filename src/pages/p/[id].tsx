@@ -1,25 +1,30 @@
 import { NextPage } from "next";
-import fetch from "isomorphic-unfetch";
+import { useRouter } from "next/router";
+import Markdown from "react-markdown";
 
 import Layout from "../../components/MyLayout";
-import { Show } from "./../index";
 
-const Post: NextPage<{ show: Show }> = ({ show }) => {
+const Post: NextPage<{}> = () => {
+  const router = useRouter();
+
   return (
     <Layout>
-      <h1>{show.name}</h1>
-      <p>{show.summary.replace(/<[/]?[pb]>/g, "")}</p>
-      {show.image ? <img src={show.image.medium} /> : null}
+      <h1>{router.query.id}</h1>
+      <div className="markdown">
+        <Markdown
+          source={`
+This is our blog post.
+Yes. We can have a [link](/link).
+And we can have a title as well.
+
+### This is a title
+
+And here's the content.
+      `}
+        />
+      </div>
     </Layout>
   );
-};
-
-Post.getInitialProps = async (context): Promise<{ show: Show }> => {
-  const { id } = context.query;
-  const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
-  const show = (await res.json()) as Show;
-
-  return { show };
 };
 
 export default Post;
