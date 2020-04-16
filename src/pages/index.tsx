@@ -1,121 +1,77 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import fetch from "isomorphic-unfetch";
 
 import Layout from "../components/MyLayout";
 
-export interface Entry {
-  score: number;
-  show: Show;
-}
+export type Post = {
+  id: string;
+  title: string;
+};
 
-export interface Show {
-  id: number;
-  url: string;
-  name: string;
-  type: Type;
-  language: Language;
-  genres: string[];
-  status: Status;
-  runtime: number;
-  premiered: Date;
-  officialSite: null | string;
-  schedule: Schedule;
-  rating: Rating;
-  weight: number;
-  network: Network | null;
-  webChannel: Network | null;
-  externals: Externals;
-  image: Image;
-  summary: string;
-  updated: number;
-  _links: Links;
-}
+const getPosts = (): Post[] => {
+  return [
+    {
+      id: "hello-nextjs",
+      title: "Hello Next.js",
+    },
+    {
+      id: "leran-nextjs",
+      title: "Leran Next.js is awesome",
+    },
+    {
+      id: "deploy-nextjs",
+      title: "Deploy Apps with ZEIT",
+    },
+  ];
+};
 
-export interface Links {
-  self: Nextepisode;
-  previousepisode: Nextepisode;
-  nextepisode?: Nextepisode;
-}
-
-export interface Nextepisode {
-  href: string;
-}
-
-export interface Externals {
-  tvrage: number | null;
-  thetvdb: number | null;
-  imdb: null | string;
-}
-
-export interface Image {
-  medium: string;
-  original: string;
-}
-
-export enum Language {
-  English = "English",
-}
-
-export interface Network {
-  id: number;
-  name: string;
-  country: Country | null;
-}
-
-export interface Country {
-  name: string;
-  code: string;
-  timezone: string;
-}
-
-export interface Rating {
-  average: number | null;
-}
-
-export interface Schedule {
-  time: string;
-  days: string[];
-}
-
-export enum Status {
-  Ended = "Ended",
-  Running = "Running",
-  ToBeDetermined = "To Be Determined",
-}
-
-export enum Type {
-  Animation = "Animation",
-  Documentary = "Documentary",
-  Scripted = "Scripted",
-}
-
-const Index: NextPage<{ shows: Show[] }> = ({ shows }) => {
+const PostLink: NextPage<{ post: Post }> = ({ post }) => {
   return (
-    <Layout>
-      <h1>BatMan TV Shows</h1>
-      <ul>
-        {shows.map((show) => (
-          <li key={show.id}>
-            <Link href="/p/[id]" as={`/p/${show.id}`}>
-              <a>{show.name}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </Layout>
+    <li key={post.id}>
+      <Link href="/p/[id]" as={`/p/${post.id}`}>
+        <a>{post.title}</a>
+      </Link>
+      <style jsx>{`
+        li {
+          list-style: none;
+          margin: 5px 0;
+        }
+
+        a {
+          text-decoration: none;
+          color: blue;
+          font-family: "Arial";
+        }
+
+        a:hover {
+          opacity: 0.6;
+        }
+      `}</style>
+    </li>
   );
 };
 
-Index.getInitialProps = async (): Promise<{ shows: Show[] }> => {
-  const res = await fetch("https://api.tvmaze.com/search/shows?q=batman");
-  const data = (await res.json()) as Entry[];
+const Index: NextPage = () => {
+  return (
+    <Layout>
+      <h1>My Blog</h1>
+      <ul>
+        {getPosts().map((post) => (
+          <PostLink key={post.id} post={post} />
+        ))}
+      </ul>
+      <style jsx>{`
+        h1,
+        a {
+          font-family: "Arial";
+        }
 
-  console.log(`show data fetched. count: ${data.length}`);
-
-  return {
-    shows: data.map((entry) => entry.show),
-  };
+        ul {
+          padding: 0;
+        }
+      `}</style>
+    </Layout>
+  );
 };
 
 export default Index;
